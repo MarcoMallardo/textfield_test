@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+bool mailIsValid(String mail) {
+  bool tieneUnArroba = (RegExp(RegExp.escape('@')).allMatches(mail).length == 1);
+  return tieneUnArroba /*falta lo demas!! */;
+}
+
 void main() {
   runApp(const MainApp());
 }
@@ -23,18 +28,23 @@ class _MainAppState extends State<MainApp> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(titleText, style: TextStyle(fontSize: 24),),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                child: TextField(
-                  controller: textFieldController,
-                  decoration: InputDecoration(
-                    hintText: 'Ingrese su correo',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.person),
-                    ),
-                ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40.0),
+              child: TextField(
+                controller: textFieldController,
+                decoration: InputDecoration(
+                  hintText: 'Ingrese su correo',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.person),
+                  ),
               ),
-              
+            ),
+            ElevatedButton(
+              onPressed: () {
+                
+              },
+              child: Text('Confirmar'),
+            )
           ]
         )
       ),
