@@ -1,8 +1,29 @@
 import 'package:flutter/material.dart';
 
+/// Función que valida si una cadena de texto representa un correo electrónico válido.
+/// Utiliza una expresión regular para verificar el formato estándar de un email.
+///
+/// La expresión regular utilizada es: r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+///
+/// Explicación de la regex:
+/// - ^ : Inicio de la cadena.
+/// - [a-zA-Z0-9._%+-]+ : Una o más letras, números o caracteres especiales permitidos antes del @.
+/// - @ : El símbolo @ obligatorio.
+/// - [a-zA-Z0-9.-]+ : Una o más letras, números, puntos o guiones para el dominio.
+/// - \. : Un punto literal.
+/// - [a-zA-Z]{2,} : Al menos dos letras para la extensión del dominio (ej. com, org).
+/// - $ : Fin de la cadena.
+///
+/// Esta regex es básica y no cubre todos los casos extremos de RFC 5322, pero es suficiente para validación común.
+/// Para validaciones más estrictas, considera usar bibliotecas especializadas.
 bool mailIsValid(String mail) {
-  bool tieneUnArroba = (RegExp(RegExp.escape('@')).allMatches(mail).length == 1);
-  return tieneUnArroba /*falta lo demas!! */;
+  // Definimos la expresión regular para validar el email
+  final RegExp emailRegex = RegExp(
+    r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+  );
+
+  // Verificamos si el email coincide con la regex
+  return emailRegex.hasMatch(mail);
 }
 
 void main() {
@@ -18,7 +39,7 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   String titleText = 'Bienvenido';
-  TextEditingController textFieldController = TextEditingController();
+  TextEditingController inputController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,26 +48,31 @@ class _MainAppState extends State<MainApp> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(titleText, style: TextStyle(fontSize: 24),),
+            Text(titleText, style: TextStyle(fontSize: 24)),
+            SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40.0),
               child: TextField(
-                controller: textFieldController,
+                controller: inputController,
                 decoration: InputDecoration(
                   hintText: 'Ingrese su correo',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.person),
-                  ),
+                ),
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                
-              },
-              child: Text('Confirmar'),
-            )
-          ]
-        )
+            SizedBox(height: 20),
+            ElevatedButton(onPressed: () {
+              String email = inputController.text;
+              if (mailIsValid(email)) {
+                titleText = 'Correo válido';
+              } else {
+                titleText = 'Correo inválido';
+              }
+              setState(() {});
+            }, child: Text('Confirmar')),
+          ],
+        ),
       ),
     );
   }
