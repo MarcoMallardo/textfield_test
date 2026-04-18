@@ -49,10 +49,12 @@ class _MainAppState extends State<MainApp> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(titleText, style: TextStyle(fontSize: 24)),
-            SizedBox(height: 20),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40.0),
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Text(titleText, style: TextStyle(fontSize: 24)),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 10),
               child: TextField(
                 controller: emailInput,
                 decoration: InputDecoration(
@@ -62,11 +64,11 @@ class _MainAppState extends State<MainApp> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40.0),
+              padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 10),
               child: TextField(
                 controller: passwordInput,
+                obscureText: true,
                 decoration: InputDecoration(
                   hintText: 'Ingrese su contraseña',
                   border: OutlineInputBorder(),
@@ -74,23 +76,25 @@ class _MainAppState extends State<MainApp> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                String email = emailInput.text;
-                String pass = passwordInput.text;
-                if (email.isNotEmpty && pass.isNotEmpty) {
-                  if (mailIsValid(email)) {
-                    titleText = 'Correo válido';
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: ElevatedButton(
+                onPressed: () {
+                  String email = emailInput.text;
+                  String pass = passwordInput.text;
+                  if (email.isNotEmpty && pass.isNotEmpty) {
+                    if (mailIsValid(email)) {
+                      titleText = 'Correo válido';
+                    } else {
+                      titleText = 'Correo inválido';
+                    }
                   } else {
-                    titleText = 'Correo inválido';
+                    titleText = 'Ingrese su mail y contraseña';
                   }
-                } else {
-                  titleText = 'Ingrese su mail y contraseña';
-                }
-                setState(() {});
-              }, 
-              child: Text('Confirmar')
+                  setState(() {});
+                }, 
+                child: Text('Confirmar')
+              ),
             ),
           ],
         ),
