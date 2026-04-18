@@ -39,7 +39,8 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   String titleText = 'Bienvenido';
-  TextEditingController inputController = TextEditingController();
+  TextEditingController emailInput = TextEditingController();
+  TextEditingController passwordInput = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -53,24 +54,44 @@ class _MainAppState extends State<MainApp> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40.0),
               child: TextField(
-                controller: inputController,
+                controller: emailInput,
                 decoration: InputDecoration(
                   hintText: 'Ingrese su correo',
                   border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.person),
+                  prefixIcon: Icon(Icons.alternate_email),
                 ),
               ),
             ),
             SizedBox(height: 20),
-            ElevatedButton(onPressed: () {
-              String email = inputController.text;
-              if (mailIsValid(email)) {
-                titleText = 'Correo válido';
-              } else {
-                titleText = 'Correo inválido';
-              }
-              setState(() {});
-            }, child: Text('Confirmar')),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40.0),
+              child: TextField(
+                controller: passwordInput,
+                decoration: InputDecoration(
+                  hintText: 'Ingrese su contraseña',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.password),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                String email = emailInput.text;
+                String pass = passwordInput.text;
+                if (email.isNotEmpty && pass.isNotEmpty) {
+                  if (mailIsValid(email)) {
+                    titleText = 'Correo válido';
+                  } else {
+                    titleText = 'Correo inválido';
+                  }
+                } else {
+                  titleText = 'Ingrese su mail y contraseña';
+                }
+                setState(() {});
+              }, 
+              child: Text('Confirmar')
+            ),
           ],
         ),
       ),
