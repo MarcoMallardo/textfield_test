@@ -38,7 +38,7 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  String titleText = 'Bienvenido';
+  static const String titleText = 'Bienvenido';
   TextEditingController emailInput = TextEditingController();
   TextEditingController passwordInput = TextEditingController();
 
@@ -51,7 +51,7 @@ class _MainAppState extends State<MainApp> {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Text(titleText, style: TextStyle(fontSize: 24)),
+              child: const Text(titleText, style: TextStyle(fontSize: 24)),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 10),
@@ -78,22 +78,29 @@ class _MainAppState extends State<MainApp> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
-              child: ElevatedButton(
-                onPressed: () {
-                  String email = emailInput.text;
-                  String pass = passwordInput.text;
-                  if (email.isNotEmpty && pass.isNotEmpty) {
-                    if (mailIsValid(email)) {
-                      titleText = 'Correo válido';
-                    } else {
-                      titleText = 'Correo inválido';
-                    }
-                  } else {
-                    titleText = 'Ingrese su mail y contraseña';
-                  }
-                  setState(() {});
-                }, 
-                child: Text('Confirmar')
+              child: Builder(
+                builder: (context) {
+                  return ElevatedButton(
+                    onPressed: () {
+                      String email = emailInput.text;
+                      String pass = passwordInput.text;
+                      String message;
+
+                      if (email.isEmpty || pass.isEmpty) {
+                        message = 'Ingrese su mail y contraseña';
+                      } else if (!mailIsValid(email)) {
+                        message = 'Correo inválido';
+                      } else {
+                        message = 'Correo válido';
+                      }
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(message)),
+                      );
+                    },
+                    child: Text('Confirmar'),
+                  );
+                },
               ),
             ),
           ],
